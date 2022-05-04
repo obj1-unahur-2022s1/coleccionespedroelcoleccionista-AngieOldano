@@ -25,7 +25,21 @@ object pedro{
 	method robanColecccion(){coleccion.clear()}
 	method cuantasCosasEnColeccion(){coleccion.size()}
 	method noHayNada(){coleccion.isEmpty()}
+	method mejorColeccion(elemento)=elemento.valor()>coleccion.last().valor()
 	method elementosValenMas(){ coleccion.filter({c => c.valor()>500}) }
+	method cotizacionTotal() = coleccion.sum({c => c.valor()})
+	method seQuemaElUltimoElemento(){		
+		coleccion.last().quemar()
+		if (coleccion.last().estaArruinado()){
+			coleccion.remove(coleccion.last())
+		}
+		coleccion.removeAll(self.filtrarQuemados())
+	}
+	method seQuemaTodaLaColeccion(){
+		coleccion.forEach({c => c.quemar()})
+		coleccion.removeAll(self.filtrarQuemados())
+	}
+	method filtrarQuemados() = coleccion.filter({c => c.estaArruinado()})
 }
 
 object estampilla{
@@ -35,17 +49,23 @@ object estampilla{
 }
 
 object ollaDeHierro{
+	const property estaArruinado = false
 	method valor()=200
+	method quemar(){}
 }
 
 object collar{
+	const property estaArruinado = false
 	method valor()=100000
+	method quemar(){}
 }
 
 object memoria{
+	const property estaArruinado = false
 	var property capacidad = 4
 	method valor()=capacidad*100
-	method alterar(p)=capacidad-capacidad*p
+	method alterar(p){capacidad*=capacidad*p/100}
+	method quemar(){capacidad*=0.01}
 }
 
 
